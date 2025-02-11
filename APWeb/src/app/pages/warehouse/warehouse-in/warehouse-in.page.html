@@ -1,0 +1,221 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+
+      <form class="inputForm" #myForm="ngForm">
+
+        <div [ngStyle]="{'background-color': backgroundColor}">
+          <h1>Warehouse</h1>
+        </div>
+
+        <mat-button-toggle-group [(ngModel)]="isChecked" (change)="ToggleAction($event)" name="Toggle">
+          <mat-button-toggle [value]="false">Add In</mat-button-toggle>
+          <mat-button-toggle [value]="true">Take Out</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <div><br></div>
+
+        <app-search-supplier *ngIf="isSupplierFound==false"></app-search-supplier>
+        <div class="item-container">
+          <ion-item (click)="changeSupplier()">
+            <b>Supplier:</b> {{SupplierName}} <b>({{ProductData.SupplierID}})</b>
+            <input type="hidden" [(ngModel)]="ProductData.SupplierID" name="ProductData.SupplierID" required>
+          </ion-item>
+        </div>
+
+        <div class="container">
+
+          <div class="info" *ngIf="SupplierName">
+            <div class="left-info">
+              <div><b>Supplier:</b></div>
+            </div>
+            <div class="right-info">
+              <div>{{SupplierName}}</div>
+            </div>
+          </div>
+
+          <div class="info" *ngIf="ProductData.ProductID">
+            <div class="left-info">
+              <div><b>ProductID:</b></div>
+              <div><b>Department:</b></div>
+              <div><b>UnitsPerPackage:</b></div>
+            </div>
+            <div class="right-info">
+              <div>{{ProductData.ProductID}}</div>
+              <div>{{DepartmentName}}</div>
+              <div>{{UnitsPerPackage}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div><br></div>
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="myDatepicker" placeholder="Choose a date" [(ngModel)]="selectedDate"
+            name="selectedDate">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-form-field>
+
+        <ion-searchbar class="searchBar" color="light" [(ngModel)]="inputProductID" name="inputProductID"
+          placeholder="Search by ProductID" (ionInput)="onProductIDChange()" [debounce]="500">
+        </ion-searchbar>
+
+        <ion-searchbar class="searchBar" color="light" [(ngModel)]="ProductData.ProductName"
+          name="ProductData.ProductName" placeholder="Search by Name" (ionInput)="onProductNameChange()"
+          [debounce]="500">
+        </ion-searchbar>
+
+        <!-- 显示过滤后的产品列表 -->
+        <ion-list *ngIf="filteredProducts.length > 0">
+          <ion-item *ngFor="let product of filteredProducts" (click)="selectProduct(product)">
+            {{ product.ProductName }}
+          </ion-item>
+        </ion-list>
+
+        <div class="topInput">
+          <mat-form-field appearance="fill" *ngIf="isAddIn">
+            <mat-label>Add To:</mat-label>
+            <mat-select [(ngModel)]="AddTo" name="AddTo" required>
+              <mat-option *ngFor="let Source of SourceOptions" [value]="Source.value" (click)="onSourceChange()">
+                {{ Source.key }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" *ngIf="!isAddIn">
+            <mat-label>From:</mat-label>
+            <mat-select [(ngModel)]="ProductData.Source" name="ProductData.Source" required>
+              <mat-option *ngFor="let Source of SourceOptions" [value]="Source.value" (click)="onSourceChange()">
+                {{ Source.key }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="fill" *ngIf="!isAddIn">
+            <mat-label>Sell to:</mat-label>
+            <mat-select [(ngModel)]="ProductData.SellTo" name="ProductData.SellTo" required>
+              <mat-option *ngFor="let SellTo of SellToList" [value]="SellTo">
+                {{ SellTo }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+
+          <mat-form-field appearance="fill" *ngIf="!isAddIn">
+            <mat-label>Unit Quantity:</mat-label>
+            <input matInput type="number" [(ngModel)]="ProductData.UnitQty" name="ProductData.UnitQty" [max]="TotalQty"
+              required>
+            <a matSuffix>/{{TotalQty}} {{ProductData.UnitOfMeasure}}</a>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" *ngIf="isAddIn">
+            <mat-label>Unit Quantity:</mat-label>
+            <input matInput type="number" [(ngModel)]="ProductData.UnitQty" name="ProductData.UnitQty" required>
+            <a matSuffix>/{{TotalQty}} {{ProductData.UnitOfMeasure}}</a>
+          </mat-form-field>
+
+
+        </div>
+
+
+        <div>
+          <button mat-raised-button color="primary" (click)="addIn()" [disabled]="myForm.invalid" *ngIf="isAddIn">
+            Add In
+          </button>
+
+          <button mat-raised-button color="primary" (click)="takeOut()" [disabled]="myForm.invalid" *ngIf="!isAddIn">
+            Take Out
+          </button>
+          <!-- 
+          <button mat-raised-button color="primary" (click)="reset()">
+            Reset
+          </button> -->
+        </div>
+
+
+
+        <!-- <mat-form-field appearance="fill">
+            <mat-label>Invoice</mat-label>
+            <input matInput type="string" [(ngModel)]="ProductData.Invoice" name="ProductData.Invoice" (ngModelChange)="onInvoiceChange()" required>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Buyer</mat-label>
+            <mat-select [(ngModel)]="ProductData.BuyerID" name="data.BuyerID" required>
+              <mat-option *ngFor="let buyer of listBuyer" [value]="buyer.BuyerID">
+                {{ buyer.FullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="isInvoice">
+
+          <mat-form-field appearance="fill">
+            <mat-label>CaseCost</mat-label>
+            <input matInput type="number" [(ngModel)]="ProductData.CaseCost" name="ProductData.CaseCost"
+              (ngModelChange)="priceChange('CaseCost')">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Case Quantity</mat-label>
+            <input matInput type="number" [(ngModel)]="ProductData.CaseQty" name="caseQty"
+              (ngModelChange)="priceChange('CaseQty')">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>UnitsPerPackage</mat-label>
+            <input matInput type="number" [(ngModel)]="ProductData.UnitsPerPackage"
+              name="ProductData.UnitsPerPackage" (ngModelChange)="priceChange('UnitsPerPackage')" required>
+          </mat-form-field>
+        -->
+
+        <div class="tableScroll" *ngIf="ProductData.ProductName">
+          <!-- <table>
+            <thead>
+              <tr>
+                <th>Delete</th>
+                <th>Date</th>
+                <th>UnitQTY</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let transaction of TransactionData">
+                <td (click)="deleteTransaction(transaction.TransactionID)"><mat-icon>delete</mat-icon></td>
+                <td>{{transaction.Date | date: 'yyyy-MM-dd' }}</td>
+                <td>{{transaction.UnitQty}}</td>
+                <td>{{transaction.Action}}</td>
+              </tr>
+            </tbody>
+          </table> -->
+
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>UnitQTY</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let inventory of InventoryData">
+                <td>{{inventory.Date | date: 'yyyy-MM-dd' }}</td>
+                <td>{{inventory.UnitQty}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </form>
+    </ion-content>
+
+  </ion-split-pane>
+</ion-content>

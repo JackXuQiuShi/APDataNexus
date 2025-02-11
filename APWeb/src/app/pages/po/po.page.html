@@ -1,0 +1,77 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <form class="inputForm">
+        <h1>Order</h1>
+        <h4><b>User:</b> {{user.Name}}|<b>StoreID:</b> {{user.Store}}</h4>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="StatusID" name="StatusID" (selectionChange)="onStatusChange()">
+            <mat-option *ngFor="let Status of StatusList" [value]="Status.value">
+              {{ Status.key }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Supplier</mat-label>
+          <mat-select [(ngModel)]="SupplierID" name="SupplierID" (selectionChange)="onSupplierChange()">
+            <mat-option *ngFor="let Supplier of SupplierList" [value]="Supplier.SupplierID">
+              {{ Supplier.CompanyName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div>
+          <button mat-raised-button color="primary" (click)="refreshData()">
+            Refresh
+          </button>
+
+          <button mat-raised-button color="primary" (click)="toCreatePO()">
+            New PO
+          </button>
+        </div>
+
+        <div class="topInput">
+          <table>
+            <thead>
+              <tr>
+                <th>OrderID</th>
+                <th>Date</th>
+                <th>StoreID</th>
+                <th>SupplierName</th>
+                <th>Destination</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let order of orderListData" (click)="toOrderDetails(order)">
+                <td>{{order.OrderID}}</td>
+                <td>{{order.DraftDate | date: 'yyyy-MM-dd' }}</td>
+                <td>{{order.StoreID}}</td>
+                <td>{{order.SupplierName}}</td>
+                <td>{{order.DestinationWarehouseName}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </form>
+    </ion-content>
+
+
+
+
+  </ion-split-pane>
+
+</ion-content>

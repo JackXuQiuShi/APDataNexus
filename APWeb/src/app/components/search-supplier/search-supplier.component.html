@@ -1,0 +1,41 @@
+<form class="inputForm" #myForm="ngForm">
+
+
+  <h1>Search Suppliers</h1>
+
+  <mat-tab-group dynamicHeight>
+
+    <mat-tab label="Search By Name">
+
+
+      <ion-searchbar class="searchBar" color="light" [(ngModel)]="SupplierName" name="SupplierName"
+        (ionInput)="getSupplierByName()" placeholder="Search Suppliers">
+      </ion-searchbar>
+
+      <ion-list>
+        <!-- <ion-item (click)="createSupplier()">
+          Create New Supplier
+        </ion-item> -->
+        <ion-item *ngFor="let result of data" (click)="selectSupplier(result)">
+          {{ result.CompanyName }} <b> ({{ result.SupplierID }})</b>
+        </ion-item>
+      </ion-list>
+
+
+      <!-- <ion-list *ngIf="functionType === 'function_create_new_item'">
+        <ion-item (click)="createSupplier()">
+          Create New Supplier
+        </ion-item>
+        <ion-item *ngFor="let result of data" (click)="createNewItem(result)" >
+          {{ result.CompanyName }}
+        </ion-item>
+      </ion-list> -->
+
+    </mat-tab>
+
+
+
+
+  </mat-tab-group>
+
+</form>

@@ -1,0 +1,53 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <form class="inputForm">
+        
+        <div class="topInput">
+          <mat-form-field appearance="fill">
+            <mat-label>Name:</mat-label>
+            <input matInput type="text" [(ngModel)]="name" name="name">
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="getProductGroup()">
+          Search
+        </button>
+
+        <hr>
+
+        <table style="color: black;">
+          <thead>
+            <tr>
+              <th>ProduceGroupID</th>
+              <th>ProduceGroupName</th>
+              <th>ProduceGroupChineseName</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let group of data">
+              <td (click)="mapGroup(group)">{{group.ProduceGroupID}}</td>
+              <td (click)="mapGroup(group)">{{group.ProduceGroupName}}</td>
+              <td (click)="mapGroup(group)">{{group.ProduceGroupChineseName}}</td>
+              <td (click)="editGroup(group)"><mat-icon>edit</mat-icon></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </ion-content>
+
+
+
+
+  </ion-split-pane>
+
+</ion-content>

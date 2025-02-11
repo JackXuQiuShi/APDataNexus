@@ -1,0 +1,192 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <ion-content id="main-content">
+        <form class="inputForm" #myForm="ngForm">
+
+          <div class="header" [ngStyle]="{'background-color': backgroundColor}">
+            <h1>Warehouse</h1>
+            <mat-button-toggle-group [(ngModel)]="isChecked" (change)="ToggleAction($event)" name="Toggle">
+              <mat-button-toggle [value]="false">Add In</mat-button-toggle>
+              <mat-button-toggle [value]="true">Take Out</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <div>
+            <!-- <div>
+              <mat-form-field>
+                <input matInput [matDatepicker]="myDatepicker" placeholder="Choose a date" [(ngModel)]="selectedDate"
+                  name="selectedDate">
+                <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #myDatepicker></mat-datepicker>
+              </mat-form-field>
+            </div> -->
+
+            <!-- <mat-form-field appearance="fill" *ngIf="isAddIn">
+                <mat-label>Add To:</mat-label>
+                <mat-select [(ngModel)]="AddTo" name="AddTo" required>
+                  <mat-option *ngFor="let Source of SourceOptions" [value]="Source.value">
+                    {{ Source.key }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> -->
+            <!-- <div>
+              <mat-form-field appearance="fill" *ngIf="!isAddIn">
+                <mat-label>From:</mat-label>
+                <mat-select [(ngModel)]="Source" name="Source" required>
+                  <mat-option *ngFor="let Source of SourceOptions" [value]="Source.value">
+                    {{ Source.key }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+
+            <!-- <ion-searchbar class="searchBar" color="light" [(ngModel)]="OrderID" name="OrderID"
+              placeholder="Search by OrderID" (ionBlur)="onOrderIDChange()" [debounce]="300" *ngIf="Source || isAddIn">
+            </ion-searchbar> -->
+
+            <div>
+              <mat-form-field appearance="fill">
+                <mat-label>OrderID</mat-label>
+                <input matInput type="string" [(ngModel)]="OrderID" name="OrderID" (blur)="onOrderIDChange()" required>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Invoice</mat-label>
+                <input matInput type="number" [(ngModel)]="InvoiceID" name="InvoiceID">
+              </mat-form-field>
+            </div>
+            <!-- <ion-searchbar class="searchBar" color="light" [(ngModel)]="ProductID"
+              name="ProductID" placeholder="Search by ProductID" (ionInput)="onProductIDChange()"
+              [debounce]="500" *ngIf="Source || isAddIn">
+            </ion-searchbar> -->
+
+            <button mat-raised-button color="primary" (click)="getOrderByOrderID(OrderID)">
+              Search
+            </button>
+
+            <button mat-raised-button color="primary" (click)="printTable()">
+              Print
+            </button>
+
+            <button mat-raised-button color="primary" (click)="addIn()" [disabled]="myForm.invalid" *ngIf="isAddIn">
+              Add In
+            </button>
+
+            <button mat-raised-button color="primary" (click)="takeOut()" [disabled]="myForm.invalid" *ngIf="!isAddIn">
+              Take Out
+            </button>
+
+
+          </div>
+
+          <div id="print-section" #printSection>
+            <div class="divTable">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ProductItemID</th>
+                    <th>ProductName</th>
+                    <th>UnitsPerPackage</th>
+                    <th>UnitQty/Stock</th>
+                    <th>CaseQty/Stock</th>
+                    <!-- <th>Check</th> -->
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let item of OrderData">
+                    <td>{{item.ProductItemID}}</td>
+                    <td>{{item.ProductName}}</td>
+                    <td>{{item.UnitsPerPackage}}</td>
+                    <td *ngIf="isAddIn"><input matInput type="number" [(ngModel)]="item.UnitQty"
+                        name="UnitQty{{ item.ProductItemID }}" (ngModelChange)="getCaseQty(item)" required>
+                      <a matSuffix>/{{item.DestinationCurrentStock}}</a>
+                    </td>
+                    <td *ngIf="isAddIn">
+                      <input matInput type="number" [(ngModel)]="item.CaseQty" name="caseQty{{ item.ProductItemID }}"
+                        (ngModelChange)="getUnitQty(item)">
+                      <a matSuffix>/{{item.DestinationStockCaseQty}}</a>
+                    </td>
+
+                    <td *ngIf="!isAddIn"><input matInput type="number" [(ngModel)]="item.UnitQty"
+                        name="UnitQty{{ item.ProductItemID }}" (ngModelChange)="getCaseQty(item)"
+                        max="{{item.SourceCurrentStock}}" required>
+                      <a matSuffix>/{{item.SourceCurrentStock}}</a>
+                      <div *ngIf="item.UnitQty > item.SourceCurrentStock">
+                        输入的数量不能超过 {{item.SourceCurrentStock}}
+                      </div>
+                    </td>
+                    <td *ngIf="!isAddIn">
+                      <input matInput type="number" [(ngModel)]="item.CaseQty" name="caseQty{{ item.ProductItemID }}"
+                        (ngModelChange)="getUnitQty(item)">
+                      <a matSuffix>/{{item.SourceStockCaseQty}}</a>
+                    </td>
+                    <!-- <td (click)="submitDraft(item)"><mat-icon>check</mat-icon></td> -->
+                  </tr>
+                </tbody>
+              </table>
+              totalCaseQty:{{totalCaseQty | number:'1.2-2'}}
+            </div>
+          </div>
+
+
+          <!-- <button mat-raised-button color="primary" (click)="getWarehouseDrafts(StoreID)">
+            Refresh
+          </button>
+
+          <button mat-raised-button color="primary" (click)="exOrderrtExcel()">
+            ExOrderrt Excel
+          </button>
+
+          <div class="divTable">
+            <table>
+              <thead>
+                <tr>
+                  <th>ProductID</th>
+                  <th>ProductName</th>
+                  <th>Action</th>
+                  <th>UnitQty</th>
+                  <th>SupplierID</th>
+                  <th>Date</th>
+                  <th>Check</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let item of draftData">
+                  <td>{{item.ProductID}}</td>
+                  <td>{{item.ProductName}}</td>
+                  <td>{{item.Action}}</td>
+                  <td><input matInput type="number" [(ngModel)]="item.UnitQty" name="item.UnitQty"></td>
+                  <td>{{item.SupplierID}}</td>
+                  <td>{{item.Date | date:'yyyy-MM-dd'}}</td>
+                  <td (click)="submitDraft(item)"><mat-icon>check</mat-icon></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div> -->
+        </form>
+
+
+      </ion-content>
+
+
+
+
+
+    </ion-content>
+
+
+
+  </ion-split-pane>
+
+</ion-content>

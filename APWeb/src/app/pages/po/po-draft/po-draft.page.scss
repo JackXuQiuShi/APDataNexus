@@ -1,0 +1,137 @@
+// .item-container {
+//     display: flex;
+//     justify-content: center;
+//     width: 100%;
+// }
+
+// ion-item {
+//     position: relative;
+//     width: 760px;
+// }
+
+// .right-align {
+//     position: absolute !important;
+//     transform: translateX(30%);
+// }
+
+// div {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     width: 100%;
+// }
+
+
+input {
+    width: 50px;
+    /* 调整为您想要的宽度 */
+}
+
+
+.card-container {
+    display: grid;
+    gap: 24px;
+    padding: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+
+
+.product-card {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 350px;
+}
+
+.card-index {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: rgb(48, 47, 47);
+    border-radius: 50%;
+    width: 60px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #5ed762;
+    cursor: pointer;
+}
+
+.card-header {
+    margin-left: 50px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.card-header .location {
+    color: #777;
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.input-group label {
+    flex: 0 0 100px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 150px;
+}
+
+.card-footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.footer-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.footer-item label {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.footer-item p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}

@@ -1,0 +1,196 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+      <form class="inputForm" #myForm="ngForm">
+
+        <h1>Add Inventory</h1>
+
+        <h4><b>User:</b> {{inventoryData.InspectedBy}}|<b>StoreID:</b> {{inventoryData.StoreID}}</h4>
+
+        <div class="container">
+          <div class="info" *ngIf="inventoryData.ProductID">
+            <div class="left-info">
+              <div *ngIf="lastReceiving"><b>LastReceiving:</b></div>
+              <div *ngIf="lastScanDate"><b>LastScanDate:</b></div>
+              <div *ngIf="lastLocation"><b>LastLocation:</b></div>
+              <div *ngIf="inventoryData.Department"><b>Department:</b></div>
+              <div *ngIf="SupplierName"><b>Supplier:</b></div>
+              <div *ngIf="inventoryData.ProductName"><b>ProductName:</b></div>
+            </div>
+
+            <div class="right-info">
+              <div *ngIf="lastReceiving">{{lastReceiving | date:'yyyy-MM-dd'}}</div>
+              <div *ngIf="lastScanDate">{{lastScanDate | date:'yyyy-MM-dd'}}</div>
+              <div *ngIf="lastLocation">{{lastLocation}}</div>
+              <div *ngIf="inventoryData.Department">{{inventoryData.Department}}</div>
+              <div *ngIf="SupplierName">{{SupplierName}}</div>
+              <div *ngIf="inventoryData.ProductName">{{inventoryData.ProductName}}</div>
+            </div>
+          </div>
+
+          <div class="info" *ngIf="inventoryData.ProductID">
+            <div class="left-info">
+              <div><b>30days:</b></div>
+              <div><b>60days:</b></div>
+              <div><b>90days:</b></div>
+            </div>
+
+            <div class="right-info">
+              <div>{{salesQTY30}}</div>
+              <div>{{salesQTY60}}</div>
+              <div>{{salesQTY90}}</div>
+            </div>
+
+            <div class="left-info">
+              <div *ngIf="Role == 'admin' || Role == 'manager'"><b>LastCost:</b></div>
+              <div><b>Price:</b></div>
+              <div><b>TotalQTY:</b></div>
+            </div>
+
+            <div class="right-info">
+              <div *ngIf="Role == 'admin' || Role == 'manager'">${{Cost | number:'1.2-2'}}</div>
+              <div>${{RegPrice}}</div>
+              <div>{{salesQTY}}</div>
+            </div>
+
+          </div>
+
+          <div>
+            <span [ngStyle]="{'background-color': color}"></span>
+            <span [ngStyle]="{'background-color': color}" *ngIf="doubleRed"></span>
+          </div>
+
+        </div>
+
+        <hr>
+
+
+
+        <div>
+
+          <mat-form-field appearance="fill">
+            <mat-label>LocationType</mat-label>
+            <mat-select [(ngModel)]="inventoryData.LocationType" name="inventoryData.LocationType" required>
+              <mat-option *ngFor="let type of locationTypeOptions" [value]="type.key">
+                {{ type.key }} {{ type.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill"
+            *ngIf="inventoryData.LocationType != 'Warehouse' && inventoryData.LocationType != 'StoreFloor'">
+            <mat-label>Location</mat-label>
+            <input matInput type="string" [(ngModel)]="inventoryData.Location" name="inventoryData.Location"
+              (blur)="onLocationChange()" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>ProductID: {{NormalizedID}}</mat-label>
+            <input matInput type="string" [(ngModel)]="inventoryData.ProductID" name="inventoryData.ProductID"
+              (ngModelChange)="onProductIDChange()" #inputElement required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill"
+            *ngIf="inventoryData.LocationType == 'Warehouse' || inventoryData.LocationType == 'StoreFloor'">
+            <mat-label>UnitQty</mat-label>
+            <input matInput type="string" [(ngModel)]="inventoryData.UnitQty" name="inventoryData.UnitQty" required>
+          </mat-form-field>
+          <!-- 
+          <mat-form-field appearance="fill">
+            <mat-label>ProductName</mat-label>
+            <input matInput type="string" [(ngModel)]="data.ProductName" name="data.ProductName" required>
+          </mat-form-field> -->
+
+          <mat-form-field appearance="fill">
+            <mat-label>Status</mat-label>
+            <input matInput type="number" [(ngModel)]="inventoryData.Units" name="inventoryData.Units"
+              (ngModelChange)="onStatusChange()" required>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-label><b>Expired</b></mat-label>
+          <mat-checkbox [checked]="expired === 1" (change)="isExpired($event)">
+          </mat-checkbox>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- <div class="tableScroll">
+          <table>
+            <thead>
+              <tr>
+                <th>ProductID</th>
+                <th>QTY</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let sales of salesQTY">
+                <td>{{sales.Product_ID}}</td>
+                <td>{{sales.Quantity}}</td>
+                <td>{{sales.Amount}}</td>
+                <td>{{sales.Date}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
+      </form>
+      <button mat-raised-button color="primary" (click)="insertInventory()"
+        [disabled]="myForm.invalid || inventoryData.ProductID=='' || !color">
+        Add
+      </button>
+      <button mat-raised-button color="primary" (click)="reset()">
+        Reset
+      </button>
+
+      <div class="comment">
+        <p>
+          <b>Location:</b>
+          Enter the location of the inventory item.
+          Note: The Location field will not automatically clear after submission. You will need to manually update or
+          clear it if needed.
+        </p>
+        <p>
+          <b>ProductID:</b>
+          Enter the ProductID of the item you wish to add to the inventory.
+        </p>
+        <p>
+          <b>Status:</b>
+          Enter the status of the inventory item.
+          Note: The Status field will be automatically filled based on the quantity (QTY).
+        </p>
+        <p>
+          <b>Expired:</b>
+          If the product is expired, check the Expired checkbox.
+        </p>
+        <p>
+          <b>Add:</b>
+          Click the "Submit" button to submit the form.
+        </p>
+        <p>
+          <b>Reset:</b>
+          Click the "Reset" button to clear all fields and reset the form to its initial state.
+        </p>
+      </div>
+    </ion-content>
+
+
+
+  </ion-split-pane>
+
+</ion-content>

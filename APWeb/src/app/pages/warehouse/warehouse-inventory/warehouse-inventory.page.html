@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+      <form class="inputForm" #myForm="ngForm">
+
+        <h1>Add Inventory</h1>
+
+        <div class="container">
+          <div class="info">
+            <div class="left-info">
+              <div>
+                <b>{{data.ProductName}}</b>
+              </div>
+              <div>
+                <b>{{data.SupplierName}}</b>
+              </div>
+            </div>
+
+
+            <div class="right-info">
+              <b>UnitQty:{{getUnitQty()}}</b>
+            </div>
+
+          </div>
+
+        </div>
+
+        <hr>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>ProductID:{{NormalizedID}}</mat-label>
+            <input matInput type="string" [(ngModel)]="data.ProductID" name="data.ProductID"
+              (ngModelChange)="onProductIDChange()" #inputElement required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Case QTY</mat-label>
+            <input matInput type="number" [(ngModel)]="data.CaseQty" name="data.CaseQty" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>UnitsPerPackage</mat-label>
+            <input matInput type="number" [(ngModel)]="data.UnitsPerPackage" name="data.UnitsPerPackage">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>UnitCost</mat-label>
+            <input matInput type="number" [(ngModel)]="data.UnitCost" name="data.UnitCost">
+          </mat-form-field>
+          <!-- <mat-form-field appearance="fill">
+            <mat-label>Location</mat-label>
+            <input matInput type="string" [(ngModel)]="data.Location" name="data.Location">
+          </mat-form-field> -->
+        </div>
+
+
+
+      </form>
+      <button mat-raised-button color="primary" (click)="submitWarehouseItem()" [disabled]="myForm.invalid">
+        Submit
+      </button>
+      <button mat-raised-button color="primary" (click)="reset()">
+        Reset
+      </button>
+
+
+    </ion-content>
+
+
+
+  </ion-split-pane>
+
+</ion-content>

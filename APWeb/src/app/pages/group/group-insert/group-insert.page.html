@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <form class="inputForm" #myForm="ngForm">
+        <h1>Insert/Update New Group</h1>
+
+        <div class="topInput">
+
+          <mat-form-field appearance="fill">
+            <mat-label>ProduceGroupName</mat-label>
+            <input matInput type="text" [(ngModel)]="data.ProduceGroupName" name="data.ProduceGroupName" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>ProduceGroupChineseName</mat-label>
+            <input matInput type="text" [(ngModel)]="data.ProduceGroupChineseName" name="data.ProduceGroupChineseName"
+              required>
+          </mat-form-field>
+        </div>
+
+
+        <div>
+          <button mat-raised-button color="primary" (click)="groupInsert()" [disabled]="myForm.invalid"
+            [hidden]="isInsertHidden">
+            Insert
+          </button>
+
+          <button mat-raised-button color="primary" (click)="groupUpdate()" [disabled]="myForm.invalid"
+            [hidden]="!isInsertHidden">
+            Update
+          </button>
+        </div>
+
+      </form>
+    </ion-content>
+  </ion-split-pane>
+</ion-content>

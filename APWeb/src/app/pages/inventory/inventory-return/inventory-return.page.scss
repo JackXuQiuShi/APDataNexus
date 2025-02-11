@@ -1,0 +1,50 @@
+ion-searchbar {
+    width: 90vh;
+    max-width: 90%;
+}
+
+span {
+    display: inline-block;
+    width: 20px;
+    /* 设置合适的宽度 */
+    height: 20px;
+    /* 设置合适的高度 */
+    border-radius: 50%;
+    /* 使元素变成圆形 */
+    margin-left: 10px;
+    /* 添加一些间距 */
+    vertical-align: middle;
+    /* 对齐到文字中间 */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+}
+
+.left-info {
+    flex: 20%;
+    margin: 10px;
+}
+
+.right-info {
+    flex: 80%;
+    margin: 10px;
+}
+
+.left-info div,
+.right-info div {
+    padding: 2px;
+}

@@ -1,0 +1,31 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <form class="inputForm">
+        <h1>Create Order</h1>
+        <h4><b>User:</b> {{user.Name}}|<b>StoreID:</b> {{user.Store}}</h4>
+        <button mat-raised-button color="primary" (click)="createNewPO()">
+          New PO
+        </button>
+        <app-search-supplier></app-search-supplier>
+        
+        
+
+
+
+      </form>
+    </ion-content>
+
+
+
+
+  </ion-split-pane>
+
+</ion-content>

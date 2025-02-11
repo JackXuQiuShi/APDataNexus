@@ -1,0 +1,23 @@
+.item-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+ion-item {
+    position: relative;
+    width: 760px;
+}
+
+.right-align{
+    position: absolute !important;
+
+    transform: translateX(30%);
+}
+
+div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

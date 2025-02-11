@@ -1,0 +1,214 @@
+<app-navbar></app-navbar>
+
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+      <app-search-supplier *ngIf="isSupplierFound==false"></app-search-supplier>
+
+      <form class="inputForm" #myForm="ngForm" *ngIf="isSupplierFound">
+        <h1>Insert New Item</h1>
+
+        <div class="item-container">
+          <ion-item (click)="changeSupplier()" [disabled]="edit">
+            <b>Supplier:</b> {{ this.data.CompanyName}} <b>({{this.data.SupplierID}})</b>
+
+            <div class="right-align">
+              <b>User:</b> {{data.Applicant}} |
+              <b>StoreID:</b> {{data.RequestStoreID}}
+            </div>
+          </ion-item>
+        </div>
+
+        <div class="topInput">
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_productID">ProductID条码</mat-label>
+            <input [title]="detail_productID" matInput type="text" [(ngModel)]="data.ProductID" name="data.ProductID"
+              maxlength=15 (blur)="onProductIDChange()" [disabled]="edit" required>
+            <a matSuffix>{{ data.ProductID.length }}/15</a>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>CheckDigit</mat-label>
+            <input matInput type="number" [(ngModel)]="data.CheckDigit" name="data.CheckDigit">
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="fill" class="longButton">
+          <mat-label [title]="detail_fullname">ProductFullName产品全名</mat-label>
+          <input [title]="detail_fullname" matInput type="text" [(ngModel)]="data.ProductFullName"
+            name="data.ProductFullName" minlength=10 maxlength=80 required>
+          <a matSuffix>{{ data.ProductFullName.length }}/80</a>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="longButton">
+          <mat-label [title]="detail_productname">ProductName产品名称</mat-label>
+          <input [title]="detail_productname" matInput type="text" [(ngModel)]="data.ProductName"
+            name="data.ProductName" minlength=10 maxlength=25 required>
+          <a matSuffix>{{ data.ProductName.length }}/25</a>
+        </mat-form-field>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_chinesename">ChineseName繁体中文</mat-label>
+            <input [title]="detail_chinesename" matInput type="text" [(ngModel)]="data.ProductAlias"
+              name="data.ProductAlias" (blur)="convertToTraditional()">
+            <a matSuffix>{{ data.ProductAlias.length }}/15</a>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Department部门</mat-label>
+            <mat-select [(ngModel)]="data.DepartmentID" name="data.DepartmentID" (selectionChange)="getBuyer()"
+              required>
+              <mat-option *ngFor="let department of Departments" [value]="department.DepartmentID">
+                {{ department.DepartmentName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_unitsize">UnitSize</mat-label>
+            <input [title]="detail_unitsize" matInput type="number" [(ngModel)]="data.UnitSize" name="data.UnitSize"
+              (ngModelChange)="updatePackageSpec()" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_unitsizeuom">UnitSizeUom</mat-label>
+            <mat-select [title]="detail_unitsizeuom" [(ngModel)]="data.UnitSizeUom" name="data.UnitSizeUom"
+              (selectionChange)="updatePackageSpec()" required>
+              <mat-option *ngFor="let UnitSizeUom of UOM" [value]="UnitSizeUom">
+                {{ UnitSizeUom }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_packagespec">PackageSpec产品规格</mat-label>
+            <input [title]="detail_packagespec" matInput type="text" [(ngModel)]="data.PackageSpec"
+              name="data.PackageSpec" disabled>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_measure">Measure单位</mat-label>
+            <mat-select [title]="detail_measure" [(ngModel)]="data.Measure" name="data.Measure" required>
+              <mat-option *ngFor="let Measure of Measures" [value]="Measure">
+                {{ Measure }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_numPerPack">NumPerPack每箱产品数量</mat-label>
+            <input [title]="detail_numPerPack" matInput type="number" [(ngModel)]="data.NumPerPack"
+              name="data.NumPerPack" required>
+          </mat-form-field>
+
+
+
+          <mat-form-field appearance="fill">
+            <mat-label>UnitCost成本</mat-label>
+            <input matInput type="number" [(ngModel)]="data.UnitCost" name="data.UnitCost" required>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>RetailPrice零售价</mat-label>
+            <input matInput type="number" [(ngModel)]="data.RetailPrice" name="data.RetailPrice" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>PromotionPrice特价</mat-label>
+            <input matInput type="number" [(ngModel)]="data.PromotionPrice" name="data.PromotionPrice">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>VolumeUnitCost批量优惠进价</mat-label>
+            <input matInput type="number" [(ngModel)]="data.VolumeUnitCost" name="data.VolumeUnitCost">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>MinBulkVolume优惠进价数量</mat-label>
+            <input matInput type="number" [(ngModel)]="data.MinBulkVolume" name="data.MinBulkVolume">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label [title]="detail_countryoforigin">CountryOfOrigin产地</mat-label>
+            <input [title]="detail_countryoforigin" matInput type="text" [(ngModel)]="data.CountryOfOrigin"
+              name="data.CountryOfOrigin" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Ethnic族裔</mat-label>
+            <mat-select [(ngModel)]="data.Ethnic" name="data.Ethnic" required>
+              <mat-option *ngFor="let Ethnic of Ethnics" [value]="Ethnic">
+                {{ Ethnic }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Buyer</mat-label>
+            <mat-select [(ngModel)]="data.BuyerID" name="data.BuyerID" required>
+              <mat-option *ngFor="let buyer of listBuyer" [value]="buyer.BuyerID">
+                {{ buyer.FullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div style="color: rgb(1, 1, 42); margin-top: -20px">
+          <mat-label>Tax1税(13%)</mat-label>
+          <mat-checkbox [checked]="data.Tax1App === 1" (change)="checkTax1($event)">
+          </mat-checkbox>
+
+          <mat-label>Tax2税(5%)</mat-label>
+          <mat-checkbox [checked]="data.Tax2App === 1" (change)="checkTax2($event)">
+          </mat-checkbox>
+
+          <b [ngClass]="{'highlight-red': getMargin(data) < 0.4}">Markup:{{ getMargin(data)*100 | number:'1.2-2' }}%</b>
+        </div>
+
+        <div>
+          <button mat-raised-button color="primary" (click)="itemInsert()" [disabled]="myForm.invalid" *ngIf="!edit">
+            Insert
+          </button>
+          <button mat-raised-button color="primary" (click)="itemInsertAndSaveInfo()" [disabled]="myForm.invalid"
+            *ngIf="!edit">
+            Insert&Save
+          </button>
+
+          <button mat-raised-button color="primary" (click)="updateItemDraft()" [disabled]="myForm.invalid"
+            *ngIf="edit">
+            Update
+          </button>
+          <!-- <button mat-raised-button color="primary" (click)="test()" >
+            test
+          </button> -->
+        </div>
+
+
+
+
+      </form>
+    </ion-content>
+  </ion-split-pane>
+</ion-content>

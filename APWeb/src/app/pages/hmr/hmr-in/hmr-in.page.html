@@ -1,0 +1,168 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+
+      <form class="inputForm" #myForm="ngForm">
+
+        <div [ngStyle]="{'background-color': backgroundColor}">
+          <h1>HMR</h1>
+        </div>
+
+        <mat-button-toggle-group [(ngModel)]="isChecked" (change)="ToggleAction($event)" name="Toggle">
+          <mat-button-toggle [value]="false">Add In</mat-button-toggle>
+          <mat-button-toggle [value]="true">Take Out</mat-button-toggle>
+        </mat-button-toggle-group>
+
+
+        <div><br></div>
+
+        <app-search-supplier *ngIf="isSupplierFound==false"></app-search-supplier>
+        <div class="item-container">
+          <ion-item (click)="changeSupplier()">
+            <b>Supplier:</b> {{this.ProductData.SupplierName}} <b>({{ProductData.SupplierID}})</b>
+            <input type="hidden" [(ngModel)]="ProductData.SupplierID" name="ProductData.SupplierID" required>
+          </ion-item>
+        </div>
+
+        <div class="container" *ngIf="ProductData.ProductName">
+          <!-- <div class="info" *ngIf="ProductData.SupplierName">
+            <div class="left-info">
+              <div><b>Supplier:</b></div>
+            </div>
+            <div class="right-info">
+              <div>{{ProductData.SupplierName}}</div>
+            </div>
+          </div> -->
+
+          <div class="info" *ngIf="ProductData.ProductDesc">
+            <div class="left-info">
+              <div *ngIf="ProductData.ProductDesc"><b>Desc:</b></div>
+            </div>
+            <div class="right-info">
+              <div>{{ProductData.ProductDesc}}</div>
+            </div>
+          </div>
+
+          <div class="info">
+            <div class="left-info">
+              <div *ngIf="ProductData.UPC"><b>UPC:</b></div>
+              <div *ngIf="ProductData.ProductType"><b>Type:</b></div>
+            </div>
+
+            <div class="right-info">
+              <div *ngIf="ProductData.UPC">{{ProductData.UPC}}</div>
+              <div *ngIf="ProductData.ProductType">{{ProductData.ProductType}}</div>
+            </div>
+
+            <div class="left-info">
+              <div *ngIf="ProductData.DepartmentName"><b>Department:</b></div>
+              <div *ngIf="ProductData.Location"><b>Location:</b></div>
+              <div *ngIf="ProductData.UnitPrice"><b>UnitPrice:</b></div>
+            </div>
+
+            <div class="right-info">
+              <div *ngIf="ProductData.DepartmentName">{{ProductData.DepartmentName}}</div>
+              <div *ngIf="ProductData.Location">{{ProductData.Location}}</div>
+              <div *ngIf="ProductData.UnitPrice">{{ProductData.UnitPrice}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div><br></div>
+
+        <ion-searchbar class="searchBar" color="light" [(ngModel)]="ProductData.ProductID" name="ProductData.ProductID"
+          placeholder="Search by ProductID" (ionInput)="onProductIDChange()" [debounce]="300">
+        </ion-searchbar>
+
+        <ion-searchbar class="searchBar" color="light" [(ngModel)]="ProductData.ProductName"
+          name="ProductData.ProductName" placeholder="Search by Name" (ionInput)="onProductNameChange()">
+        </ion-searchbar>
+
+        <!-- 显示过滤后的产品列表 -->
+        <ion-list *ngIf="filteredProducts.length > 0">
+          <ion-item *ngFor="let product of filteredProducts" (click)="selectProduct(product)">
+            {{ product.ProductName }}
+          </ion-item>
+        </ion-list>
+
+
+
+        <div class="topInput">
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" placeholder="Choose a date" [(ngModel)]="selectedDate"
+              name="selectedDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="fill" *ngIf="!isAddIn">
+          <mat-label>Unit Quantity:</mat-label>
+          <input matInput type="number" [(ngModel)]="ProductData.UnitQty" name="ProductData.UnitQty" [max]="TotalQty"
+            required>
+          <a matSuffix>/{{TotalQty}} {{ProductData.UnitOfMeasure}}</a>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="isAddIn">
+          <mat-label>Unit Quantity:</mat-label>
+          <input matInput type="number" [(ngModel)]="ProductData.UnitQty" name="ProductData.UnitQty" required>
+          <a matSuffix>{{ProductData.UnitOfMeasure}}</a>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="!isAddIn">
+          <mat-label>Sell to:</mat-label>
+          <mat-select [(ngModel)]="ProductData.SellTo" name="ProductData.SellTo" required>
+            <mat-option *ngFor="let SellTo of SellToList" [value]="SellTo">
+              {{ SellTo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+
+        <div>
+          <button mat-raised-button color="primary" (click)="addIn()" [disabled]="myForm.invalid" *ngIf="isAddIn">
+            Add In
+          </button>
+
+          <button mat-raised-button color="primary" (click)="takeOut()" [disabled]="myForm.invalid" *ngIf="!isAddIn">
+            Take Out
+          </button>
+        </div>
+
+
+
+
+        <div class="tableScroll" *ngIf="ProductData.ProductName">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>UnitQTY</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let inventory of InventoryData">
+                <td>{{inventory.Date | date: 'yyyy-MM-dd' }}</td>
+                <td>{{inventory.UnitQty}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </form>
+    </ion-content>
+
+  </ion-split-pane>
+</ion-content>

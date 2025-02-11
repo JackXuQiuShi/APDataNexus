@@ -1,0 +1,129 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <!-- <ion-content  (document:keydown)="handleKeydown($event)"> -->
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <!-- <app-search-supplier *ngIf="isSupplierFound==false"></app-search-supplier> -->
+
+      <form class="inputForm" #myForm="ngForm">
+
+        <h1>Order By Frequency</h1>
+        <h4><b>User:</b> {{user.Name}}|<b>StoreID:</b> {{user.Store}}</h4>
+
+        <!-- <div class="item-container">
+          <ion-item (click)="changeSupplier()">
+            <b>Supplier:</b> {{ supplierData.CompanyName}} <b>({{supplierData.SupplierID}})</b>
+          </ion-item>
+        </div> -->
+
+
+        <div class="topInput">
+          <mat-form-field appearance="fill">
+            <mat-label>Frequency</mat-label>
+            <mat-select [(ngModel)]="frequency" name="frequency" (selectionChange)="onFrequencyChange(frequency)"
+              required>
+              <mat-option *ngFor="let frequency of frequencyList" [value]="frequency">
+                {{ frequency }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Supplier</mat-label>
+            <mat-select [(ngModel)]="supplier" name="supplier" (selectionChange)="onSupplierChange(supplier)" required>
+              <mat-option *ngFor="let supplier of supplierList" [value]="supplier">
+                {{ supplier }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <button mat-raised-button color="primary" (click)="onSupplierChange(supplier)">
+            Refresh
+          </button>
+
+          <button mat-raised-button color="primary" (click)="submit()">
+            Submit
+          </button>
+        </div>
+
+        <div class="card-container">
+          <div *ngFor="let item of itemList; let i = index" class="product-card">
+            <div class="card-index" (click)="deleteItem(item)">#{{ i + 1 }}<mat-icon>delete</mat-icon></div>
+
+            <div class="card-header">
+              <h3>{{ item.ProductName }}</h3>
+              <h3>{{ item.ProductID }}</h3>
+              <p class="location">{{ item.Location }}</p>
+            </div>
+
+            <div class="card-body">
+              <div class="input-group">
+                <label for="CaseQty{{item.ProductID}}"><strong>CaseQty:</strong></label>
+                <input matInput type="number" [(ngModel)]="item.CaseQty" id="CaseQty{{item.ProductID}}"
+                  (ngModelChange)="onUnitQtyChange(item)" name="CaseQty{{ item.ProductID }}">
+              </div>
+              <div class="input-group">
+                <label for="UnitQty{{item.ProductID}}"><strong>UnitQty:</strong></label>
+                <input matInput type="number" [(ngModel)]="item.UnitQty" id="UnitQty{{item.ProductID}}"
+                  (ngModelChange)="onCaseQtyChange(item)" name="UnitQty{{ item.ProductID }}">
+              </div>
+              <div class="input-group">
+                <label for="UnitCost{{item.ProductID}}"><strong>UnitCost:</strong></label>
+                <input matInput type="number" [(ngModel)]="item.UnitCost" id="UnitCost{{item.ProductID}}"
+                  (ngModelChange)="onUnitQtyChange(item)" name="UnitCost{{ item.ProductID }}">
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="footer-item">
+                <label><strong>UnitsPerPackage:</strong></label>
+                <p>{{ item.UnitsPerPackage }}</p>
+              </div>
+              <div class="footer-item">
+                <label><strong>RetailPrice:</strong></label>
+                <p>${{ item.RetailPrice }}</p>
+              </div>
+              <div class="footer-item">
+                <label><strong>StockQty:</strong></label>
+                <p>{{ item.StockQty }}</p>
+              </div>
+              <div class="footer-item">
+                <label><strong>LastOrderDate:</strong></label>
+                <p>{{ item.LastOrderDate }}</p>
+              </div>
+              <div class="footer-item">
+                <label><strong>MonthlySales:</strong></label>
+                <p>{{ item.MonthlySales }}</p>
+              </div>
+              <div class="footer-item">
+                <label><strong>Markup:</strong></label>
+                <p>{{ getMargin(item)*100 | number:'1.2-2' }}%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </form>
+
+      <div class="comment">
+        <p></p>
+      </div>
+
+
+    </ion-content>
+
+
+
+  </ion-split-pane>
+
+</ion-content>

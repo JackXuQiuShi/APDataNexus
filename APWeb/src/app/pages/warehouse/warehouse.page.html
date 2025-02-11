@@ -1,0 +1,137 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <ion-content id="main-content">
+        <form class="inputForm" #myForm="ngForm">
+          <h1>Warehouse</h1>
+          <mat-tab-group dynamicHeight>
+            <mat-tab label="Inventory">
+              <button mat-raised-button color="primary" (click)="getWarehouseInventory()">
+                Refresh
+              </button>
+
+              <!-- <button mat-raised-button color="primary" (click)="exportExcel()">
+                Export Excel
+              </button> -->
+
+              <div class="divTable">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ProductID</th>
+                      <th>ProductName</th>
+                      <th>StoreID</th>
+                      <th>UnitQty</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let item of inventoryData">
+                      <td>{{item.ProductID}}</td>
+                      <td>{{item.ProductName}}</td>
+                      <td>{{item.StoreID}}</td>
+                      <td>{{item.UnitQty}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+
+            <mat-tab label="Transaction">
+              <button mat-raised-button color="primary" (click)="getWarehouseTransactionSummary()">
+                Refresh
+              </button>
+
+              <!-- <button mat-raised-button color="primary" (click)="exportExcel()">
+                Export Excel
+              </button> -->
+
+              <div class="divTable">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>ProductID</th>
+                      <th>ProductName</th>
+                      <th>StoreID</th>
+                      <th>SellTo</th>
+                      <th>UnitQty</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let item of transactionData">
+                      <td>{{item.Date | date:'yyyy-MM-dd'}}</td>
+                      <td>{{item.ProductID}}</td>
+                      <td>{{item.ProductName}}</td>
+                      <td>{{item.StoreID}}</td>
+                      <td>{{item.SellTo}}</td>
+                      <td>{{item.UnitQty}}</td>
+                      <td>{{item.Action}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+
+          </mat-tab-group>
+
+        </form>
+        <!-- 
+        <div class="topInput">
+          <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" placeholder="Choose a date" [(ngModel)]="selectedDate">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="getWarehouseList()">
+          Refresh
+        </button> -->
+
+        <!-- 
+        <hr>
+
+        <table>
+          <thead>
+            <tr>
+              <th>CompanyName</th>
+              <th>Phone</th>
+              <th>Date</th>
+              <th>Fax</th>
+              
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of data">
+              <td>{{item.CompanyName}}</td>
+              <td>{{item.Phone}}</td>
+              <td>{{item.Fax}}</td>
+              <td><input type="text" [(ngModel)]="item.Email" /></td>
+            </tr>
+          </tbody>
+        </table> -->
+
+      </ion-content>
+
+
+
+
+
+    </ion-content>
+
+
+
+  </ion-split-pane>
+
+</ion-content>

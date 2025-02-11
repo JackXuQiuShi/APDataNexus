@@ -1,0 +1,200 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <form class="userInfo">
+        <div class="user-header">
+          <div>
+            <b>User:</b>
+            <span>{{ user.Name }}</span>
+          </div>
+          <div>
+            <b>StoreID:</b>
+            <span>{{ user.Store }}</span>
+          </div>
+        </div>
+      
+        <div *ngIf="user.Role == 'admin'">
+          <mat-form-field appearance="outline" class="store-selector">
+            <mat-label>Store</mat-label>
+            <mat-select [(ngModel)]="user.Store" name="user.Store" (selectionChange)="onStoreChange()">
+              <mat-option *ngFor="let Store of listStores" [value]="Store.value">
+                {{ Store.key }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+      
+
+      <div class="topInput">
+
+        <mat-card *ngIf="permission.displayItem">
+          <img mat-card-image src="../../assets/images/item3.jpg">
+          <mat-card-content>
+            <p>
+              Item search, modify
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="toItem()">
+              Search
+            </button>
+            <button mat-raised-button color="primary" (click)="toItemInsert()">
+              Add
+            </button>
+            <button mat-raised-button color="primary" (click)="toItemApproval()" *ngIf="permission.displayItemApproval">
+              Approval
+            </button>
+            <button mat-raised-button color="primary" (click)="toItemDraft()">
+              Draft
+            </button>
+            <button mat-raised-button color="primary" (click)="toItemChangePrice()">
+              Change Price
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card *ngIf="permission.displayPO">
+          <img mat-card-image src="../../assets/images/po2.jpg">
+          <mat-card-content>
+            <p>
+              PO
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="toPO()">
+              PO List
+            </button>
+            <button mat-raised-button color="primary" (click)="toPOInsert()">
+              Add Item
+            </button>
+            <button mat-raised-button color="primary" (click)="toPOFrequency()">
+              Frequency
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card *ngIf="permission.displayInventory">
+          <img mat-card-image src="../../assets/images/Inventory1.jpg">
+          <mat-card-content>
+            <p>
+              Inventory
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="toInventory()">
+              Credit
+            </button>
+            <button mat-raised-button color="primary" (click)="toInventoryInsert()">
+              Add
+            </button>
+            <button mat-raised-button color="primary" (click)="toInventoryReturn()">
+              Return
+            </button>
+            <button mat-raised-button color="primary" (click)="toInventoryReturnList()">
+              BulkReturn
+            </button>
+            <!-- <button mat-raised-button color="primary" (click)="toInventoryLocation()">
+              Location
+            </button> -->
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card *ngIf="permission.displaySupplier">
+          <img mat-card-image src="../../assets/images/Supplier3.jpg">
+          <mat-card-content>
+            <p>
+              Supplier search, modify
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="toSupplierInsert()">
+              Add
+            </button>
+            <button mat-raised-button color="primary" (click)="toSupplierApproval()"
+              *ngIf="permission.displaySupplierApproval">
+              Approval
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card *ngIf="permission.displayWarehouse">
+          <img mat-card-image src="../../assets/images/warehouse.jpg">
+          <mat-card-content>
+            <p>
+              Warehouse search, modify
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="toWarehouse()">
+              Inventory
+            </button>
+            <button mat-raised-button color="primary" (click)="toWarehouseByPO()">
+              Receive/Ship
+            </button>
+            <button mat-raised-button color="primary" (click)="toWarehouseOneItem()">
+              One Item
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card *ngIf="permission.displayGroup">
+          <img mat-card-image src="../../assets/images/item.jpg">
+          <mat-card-content>
+            <p>
+              Group search, modify
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="toGroup()">
+              Search Group
+            </button>
+            <button mat-raised-button color="primary" (click)="toGroupInsert()">
+              Add Group
+            </button>
+            <button mat-raised-button color="primary" (click)="toGroupDetails()">
+              Grouping
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+
+
+
+
+      <!-- 
+      <mat-card>
+        <img mat-card-image src="../../assets/images/online1.jpg">
+        <mat-card-content>
+          <p>
+            Online
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="toOnline()">
+            Add Item
+          </button>
+          <button mat-raised-button color="primary" (click)="toOnline()">
+            Set Flyer
+          </button>
+        </mat-card-actions>
+      </mat-card>
+       -->
+
+
+
+    </ion-content>
+
+
+
+  </ion-split-pane>
+</ion-content>

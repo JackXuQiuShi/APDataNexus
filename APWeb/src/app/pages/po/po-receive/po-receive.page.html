@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+
+      <!-- <form class="inputForm" #myForm="ngForm">
+
+        <form class="inputForm">
+          <div>
+            <h2>POID:</h2>{{POdata.PO_ID}}
+          </div>
+
+          <div class="topInput">
+            <mat-form-field appearance="fill">
+              <mat-label>Invoice:</mat-label>
+              <input matInput type="text" [(ngModel)]="POdata.Invoice" name="POdata.Invoice">
+            </mat-form-field>
+          </div>
+
+        </form>
+
+
+        <table style="color: black;">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ProductID</th>
+              <th>Prod_Name</th>
+              <th>Prod_Alias</th>
+              <th>TaxRate</th>
+              <th>UnitsPerPackage</th>
+              <th>UnitsReceived</th>
+              <th>PriceReceived</th>
+              <th>Total</th>
+              <th><input type="checkbox" [checked]="" (change)="selectDetailsAll()" /></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of PODetailsData; let i = index">
+              <td (click)="updateReceivingPODetails(detail)">{{i + 1}}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.ProductID }}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.Prod_Name }}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.Prod_Alias }}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.TaxRate }}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.UnitsPerPackage }}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.UnitsReceived }}</td>
+              <td (click)="updateReceivingPODetails(detail)">{{ detail.PriceReceived | number:'1.2-2'}}</td>
+              <td (click)="updateReceivingPODetails(detail)">${{ detail.UnitsReceived * detail.PriceReceived * (1 +
+                detail.TaxRate) | number:'1.2-2'}}
+              </td>
+              <td (click)="toggleDetailsSelection(detail.ProductID)"><input type="checkbox"
+                  [checked]="selectedDetailRows.has(detail.ProductID)" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button mat-raised-button color="primary" (click)="POReceive()">
+          Receive
+        </button>
+
+      </form> -->
+
+
+    </ion-content>
+  </ion-split-pane>
+</ion-content>

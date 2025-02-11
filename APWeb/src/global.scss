@@ -1,0 +1,335 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+
+a {
+    color: gray;
+    margin-right: 10px;
+    // font-size: large;
+    // font-weight: 900;
+}
+
+body {
+    text-align: center;
+    align-items: center;
+    // --ion-background-color: #c9d0ea;
+    --ion-background-color: rgba(175, 212, 231, 0.7);
+}
+
+ion-content {
+    --background: url('./assets/images/low_poly_banner_design_1711.jpg') no-repeat center center fixed;
+}
+
+
+form {
+    position: relative;
+    left: 50%;
+    top: 5%;
+    bottom: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    max-width: 90%;
+    padding: 20px;
+    color: #fff;
+
+    text-align: center;
+
+    border-radius: 8px;
+    // background-color: rgba(5, 26, 48, 0.3);
+    background-color: rgba(72, 137, 166, 0.3);
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px;
+}
+
+mat-form-field {
+    max-width: 100%;
+}
+
+
+.formInput {
+    // text-align: left;
+}
+
+.inputForm {
+    width: 90%;
+    color: black;
+    margin-bottom: 50px;
+}
+
+
+
+.searchBar {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+}
+
+.topInput {
+    padding-top: 30px;
+}
+
+mat-form-field {
+    margin-top: -10px;
+
+    padding-left: 10px;
+    width: 380px;
+}
+
+button {
+    width: 130px;
+    margin: 5px;
+}
+
+.longButton {
+    width: 760px;
+}
+
+img {
+    margin: auto;
+    display: block;
+}
+
+
+table {
+    margin-top: 5%;
+    width: 95%;
+    max-width: 95%;
+}
+
+
+table,
+td,
+th {
+    border-collapse: separate;
+    margin: auto;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+th,
+td {
+    padding: 5px;
+    border: #b4aaaa;
+    text-align: center;
+    border-radius: 3px;
+    box-shadow: 0px 0px 2px rgb(255, 255, 255);
+}
+
+tr:nth-child(2n) {
+    background: #dde4e4;
+}
+
+table.dataTable tr:nth-child(2n) {
+    background: #dde4e4;
+}
+
+// div>table.dataTable table,
+// td,
+// th {
+//     border-collapse: separate !important;
+//     margin: auto !important;
+// }
+
+// div>table.dataTable thead {
+//     position: sticky !important;
+//     top: 0 !important;
+//     z-index: 1 !important;
+// }
+
+
+tbody :hover {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    transform: scale(1.005);
+
+}
+
+
+th {
+    background-color: #7788aa;
+    color: #ffffff;
+}
+
+.tableScroll {
+    margin-top: 2%;
+    // max-height: 500px;
+    //overflow-x: scroll;
+    // left: 30%;
+    // position: relative;
+    // transform: translateX(-50%);
+    color: black;
+}
+
+.divTable {
+    overflow-x: auto;
+    // overflow-y: auto; 
+    height: 80vh;
+}
+
+
+.nowrap-column {
+    white-space: nowrap;
+}
+
+.custom-modal {
+    --height: auto;
+    white-space: pre-wrap;
+}
+
+.icon-background {
+    background-color: transparent;
+    width: 20px;
+}
+
+
+
+.split-pane-side {
+    min-width: 10px;
+    border-right: 0px;
+}
+
+
+
+.searchbar-clear-button {
+    width: auto;
+}
+
+ion-searchbar {
+    width: 90vh !important;
+    max-width: 90% !important;
+}
+
+
+ion-item:hover {
+    cursor: pointer;
+    transition: transform 0.05s ease;
+    transform: scale(1.05);
+}
+
+h1 {
+    color: darkblue;
+}
+
+mat-card:hover {
+    transition: transform 0.3s ease;
+    transform: scale(1.05);
+}
+
+.comment {
+    text-align: left;
+    align-items: left;
+    padding-left: 20px;
+}
+
+.highlight-red {
+    color: red;
+    font-weight: bold;
+}
+
+.file-upload-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.file-input-box {
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+.upload-btn {
+    width: 150px;
+}
+
+.my-div {
+    margin-top: 10px; /* Adjusts spacing below the button */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+/* Align buttons in a row */
+.action-buttons {
+    gap: 2px; /* Reduce spacing between buttons */
+    justify-content: center; /* Center align buttons */
+  }
+  
+  /* Reduce button size */
+  .action-buttons button {
+    min-width: 50px; /* Adjust button width */
+    max-width: 70px;
+    padding: 2px 2px; /* Reduce padding */
+    font-size: 10px; /* Reduce text size */
+    height: 18px; /* Reduce button height */
+    line-height: normal;
+  }
+
+
+@media (max-width: 768px) {
+    .file-upload-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .file-input-box {
+        max-width: 100%;
+    }
+
+    .upload-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    form {
+        min-width: 95%;
+    }
+
+
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column;
+        /* 在小屏幕上改为垂直排列 */
+    }
+
+    .form-section {
+        margin-right: 0;
+        /* 在垂直排列时，可能不再需要右边距 */
+        margin-bottom: 20px;
+        /* 为了垂直间隔 */
+    }
+
+}

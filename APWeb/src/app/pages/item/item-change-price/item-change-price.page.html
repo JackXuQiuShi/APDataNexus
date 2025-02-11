@@ -1,0 +1,188 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+    <app-sidebar></app-sidebar>
+
+    <ion-content id="main-content">
+      <form class="price-change-form">
+        <mat-card>
+          <mat-card-content>
+            <button mat-raised-button color="primary" (click)="activeDiv.setAttribute('data', 'search')">
+              create new
+            </button>
+            
+            <button mat-raised-button color="primary" (click)="activeDiv.setAttribute('data', 'draft'); getDraft()">
+              view draft
+            </button>
+            <button mat-raised-button color="primary" (click)="activeDiv.setAttribute('data', 'history')">
+              product price history
+            </button>
+            <div #activeDiv data=""></div>
+
+
+            <div *ngIf="activeDiv.getAttribute('data') === 'history'" class="my-div">
+              <div class="input-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Product ID </mat-label>
+                  <input matInput [(ngModel)]="productId" name="productId" type="text" required />
+                </mat-form-field>
+              </div>
+
+              <div class="button-group">
+                <button mat-raised-button color="primary" (click)="getPriceHistory()">Search</button>
+              </div>
+
+              <div *ngIf="records && records.length > 0" class="table-container">
+                <table class="styled-table">
+                  <thead>
+                    <tr>
+                      <th style="padding: 8px; border: 1px solid #ddd;">Product ID</th>
+                      <th style="padding: 8px; border: 1px solid #ddd;">Cost Type</th>
+                      <th style="padding: 8px; border: 1px solid #ddd;">Submit Date</th>
+                      <th style="padding: 8px; border: 1px solid #ddd;">Old Unit Cost</th>
+                      <th style="padding: 8px; border: 1px solid #ddd;">New Unit Cost</th>
+                      <th style="padding: 8px; border: 1px solid #ddd;">Status</th>
+                      <th *ngIf="permission.approvePriceChange" style="padding: 8px; border: 1px solid #ddd;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of records" style="background-color: white; color: black;">
+                      <td style="padding: 8px; border: 1px solid #ddd;">{{ record.ProductId }}</td>
+                      <td style="padding: 8px; border: 1px solid #ddd;">{{ record.CostType }}</td>
+                      <td style="padding: 8px; border: 1px solid #ddd;">{{ record.SubmitDate }}</td>
+                      <td style="padding: 8px; border: 1px solid #ddd;">{{ record.UnitCostOld | currency }}</td>
+                      <td style="padding: 8px; border: 1px solid #ddd;">{{ record.UnitCostNew | currency }}</td>
+                      <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold; text-transform: uppercase;"
+                          [ngStyle]="{'color': record.StatusId === 2 ? 'orange' : (record.StatusId === 3 ? 'green' : 'black')}">
+                        {{ record.StatusId === 2 ? 'Pending' : (record.StatusId === 3 ? 'Approved' : (record.StatusId === -1 ? 'Rejected' : 'Unknown')) }}
+                      </td>
+                      <td style="padding: 8px; border: 1px solid #ddd;" *ngIf="permission.approvePriceChange && record.StatusId === 2">
+                        <button mat-raised-button color="primary" style="height: 28px; width: 50px; font-size: 12px; padding: 2px 8px; margin-bottom: 2px;"
+                                (click)="approvePriceChange(record)">
+                          Approve
+                        </button>
+                        <button mat-raised-button color="warn" style="height: 28px; width: 50px; font-size: 12px; padding: 2px 8px; margin-bottom: 2px;"
+                                (click)="rejectPriceChange(record)">
+                          Reject
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            
+              <!-- Show message if no records found after search -->
+              <div *ngIf="records && records.length === 0" class="no-results">
+                <p>No records found for the given Product ID.</p>
+              </div>
+
+            </div>
+
+
+            <div *ngIf="activeDiv.getAttribute('data') === 'draft'" class="my-div">
+              <mat-card *ngIf="records.length === 0" class="mat-elevation-z3">
+                <mat-card-content>No records found.</mat-card-content>
+              </mat-card>
+            
+              <!-- Material Table for Draft Records -->
+              <table mat-table [dataSource]="records" class="mat-elevation-z8" *ngIf="records.length > 0">
+            
+                <!-- Product ID Column -->
+                <ng-container matColumnDef="productId">
+                  <th mat-header-cell *matHeaderCellDef> Product ID </th>
+                  <td mat-cell *matCellDef="let record"> {{ record.ProductId }} </td>
+                </ng-container>
+            
+                <!-- Cost Type Column -->
+                <ng-container matColumnDef="costType">
+                  <th mat-header-cell *matHeaderCellDef> Cost Type </th>
+                  <td mat-cell *matCellDef="let record"> {{ record.CostType }} </td>
+                </ng-container>
+            
+                <!-- Draft Date Column -->
+                <ng-container matColumnDef="draftDate">
+                  <th mat-header-cell *matHeaderCellDef> Draft Date </th>
+                  <td mat-cell *matCellDef="let record"> {{ record.DraftDate | date:'yyyy-MM-dd HH:mm:ss' }} </td>
+                </ng-container>
+            
+                <!-- Unit Cost Old Column -->
+                <ng-container matColumnDef="unitCostOld">
+                  <th mat-header-cell *matHeaderCellDef> Unit Cost (Old) </th>
+                  <td mat-cell *matCellDef="let record"> {{ record.UnitCostOld | currency }}</td>
+                </ng-container>
+            
+                <!-- Unit Cost New Column -->
+                <ng-container matColumnDef="unitCostNew">
+                  <th mat-header-cell *matHeaderCellDef> Unit Cost (New) </th>
+                  <td mat-cell *matCellDef="let record">
+                    <ng-container *ngIf="record.isEditing; else viewMode">
+                      <input matInput [value]="record.UnitCostNew" (input)="updateUnitCostNew(record, $event)" type="number" step="0.01">
+                    </ng-container>
+                    <ng-template #viewMode>
+                      {{ record.UnitCostNew | currency }}
+                    </ng-template>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef> Actions </th>
+                  <td mat-cell *matCellDef="let record">
+                    <ng-container *ngIf="record.isEditing; else normalActions">
+                      <button mat-raised-button color="primary" (click)="saveRecord(record)">Save</button>
+                    </ng-container>
+                    <ng-template #normalActions>
+                      <div class="action-buttons">
+                        <button mat-raised-button color="primary" (click)="submitRecord(record)">Submit</button>
+                        <button mat-raised-button color="primary" (click)="deletRecord(record)">delet</button>
+                        <button mat-raised-button color="primary" (click)="editRecord(record)">edit</button>
+                      </div>
+                  </ng-template>
+                  </td>
+                </ng-container>
+            
+                <!-- Header & Rows -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"  style="background: #1976d2; color: white; font-weight: bold; padding: 12px;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            
+              </table>
+            </div>
+            
+
+            <div *ngIf="activeDiv.getAttribute('data') === 'search'" class="my-div">
+              <div class="input-group">
+                <mat-form-field appearance="fill">
+                  <mat-label>Product ID </mat-label>
+                  <input matInput [(ngModel)]="productId" name="productId" type="text" required />
+                </mat-form-field>
+              </div>
+
+              <div class="button-group">
+                <button mat-raised-button color="primary" (click)="searchPrice()">Search</button>
+              </div>
+
+              <div *ngIf="searchResult" class="result-box">
+                <mat-form-field appearance="fill">
+                  <mat-label>Current Price</mat-label>
+                  <input matInput [(ngModel)]="searchResult" name="currentPrice" type="text" disabled />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                  <mat-label>New Price</mat-label>
+                  <input matInput [(ngModel)]="newPrice" name="newPrice" type="number" required />
+                </mat-form-field>
+              </div>
+
+              <div class="button-group" *ngIf="searchResult">
+                <button mat-raised-button color="accent" (click)="requestChange()">Create Draft</button>
+              </div>
+            </div>
+
+            
+
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </ion-content>
+  </ion-split-pane>
+</ion-content>

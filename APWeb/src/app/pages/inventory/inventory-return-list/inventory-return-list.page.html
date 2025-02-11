@@ -1,0 +1,113 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+
+    <ion-content id="main-content">
+      <form class="inputForm">
+
+        <h1>Inventory Return List</h1>
+
+        <h4><b>User:</b> {{user.Name}}|<b>StoreID:</b> {{user.Store}}</h4>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Supplier</mat-label>
+          <mat-select [(ngModel)]="SupplierID" name="SupplierID" (selectionChange)="onSelectionChange()">
+            <mat-option *ngFor="let Supplier of SupplierList" [value]="Supplier.SupplierID">
+              {{ Supplier.SupplierName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <!-- <ion-searchbar class="searchBar" color="light" [(ngModel)]="SupplierName"
+          name="SupplierName" placeholder="Search by SupplierName" (ionInput)="onSupplierNameChange()"
+          [debounce]="500">
+        </ion-searchbar>
+        <ion-list *ngIf="filteredSupplierList.length > 0">
+          <ion-item *ngFor="let Supplier of filteredSupplierList" (click)="selectSupplier(Supplier)">
+            {{ Supplier.CompanyName }}
+          </ion-item>
+        </ion-list> -->
+        <!-- 
+        <mat-form-field appearance="fill">
+          <mat-label>SupplierID</mat-label>
+          <input matInput type="string" [(ngModel)]="SupplierID" name="SupplierID">
+        </mat-form-field> -->
+
+
+        <div>
+          <button mat-raised-button color="primary" (click)="getProductInspectionResultSuppliers()">
+            Refresh Suppliers
+          </button>
+
+          <button mat-raised-button color="primary" (click)="getProductInspectionResult(SupplierID)">
+            Refresh Items
+          </button>
+          <!-- 
+          <button mat-raised-button color="primary" (click)="exportTableToExcel()">
+            Export
+          </button> -->
+        </div>
+
+
+        <div class="divTable">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Add</th>
+                <th>Qty</th>
+                
+                
+                <th>ProductID</th>
+                <th>ProductName</th>
+                <th>ProductChineseName</th>
+                <th>RetailPrice</th>
+                <th>UnitCost</th>
+                <th>Location</th>
+                <th>Department</th>
+                <th>Supplier</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of ReturnList;let i = index">
+                <td>{{i + 1}}</td>
+                <td (click)="submitReturnItem(item)"><mat-icon>check</mat-icon></td>
+                <td><input class="small-input" matInput type="number" [(ngModel)]="item.ReturnQuantity"
+                    name="ReturnQuantity{{ item.ProductID }}" >
+                </td>
+                <td>{{item.ProductID}}</td>
+                <td>{{item.ProductName}}</td>
+                <td>{{item.ProductChineseName}}</td>
+                <td>{{item.RetailPrice}}</td>
+                <td>{{item.UnitCost}}</td>
+                <td>{{item.LocationName}}</td>
+                <td>{{item.Department}}</td>
+                <td>{{item.SupplierName}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- <div *ngIf="ReturnList != ''">
+            <button mat-raised-button color="primary" (click)="getProductInspectionResultSuppliers()">
+              Submit All
+            </button>
+          </div> -->
+        </div>
+
+
+      </form>
+
+
+    </ion-content>
+
+
+
+  </ion-split-pane>
+
+</ion-content>

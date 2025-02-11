@@ -1,0 +1,29 @@
+td {
+    color: black;
+}
+
+
+
+.inputForm {
+    width: 70%;
+}
+
+
+/* Create a two-column layout */
+.column {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+.row {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}

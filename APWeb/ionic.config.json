@@ -1,0 +1,7 @@
+{
+  "name": "APWeb",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

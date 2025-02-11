@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+
+<ion-content>
+  <ion-split-pane contentId="main-content" when="sm">
+
+    <app-sidebar></app-sidebar>
+
+    <ion-content id="main-content">
+
+      <form class="inputForm">
+
+        <button mat-raised-button color="primary" (click)="getSupplierRequest()">
+          Refresh
+        </button>
+
+        <hr>
+
+        <table>
+          <thead>
+            <tr>
+              <th>SupplierID</th>
+              <th>CompanyName</th>
+              <th>Phone</th>
+              <th>Fax</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>PostalCode</th>
+              <th>SafetyLicense</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let supplier of data" (click)="selectSupplier(supplier)">
+              <td>{{supplier.SupplierID}}</td>
+              <td>{{supplier.CompanyName}}</td>
+              <td>{{supplier.Phone}}</td>
+              <td>{{supplier.Fax}}</td>
+              <td>{{supplier.Email}}</td>
+              <td>{{supplier.Address}}</td>
+              <td>{{supplier.City}}</td>
+              <td>{{supplier.PostalCode}}</td>
+              <td>{{supplier.SafetyLicense}}</td>
+              <td>{{supplier.Date}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </ion-content>
+
+
+
+
+  </ion-split-pane>
+
+</ion-content>
