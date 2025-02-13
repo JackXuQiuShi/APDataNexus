@@ -1,0 +1,6 @@
+[submodule "APDataNexusBack"]
+	path = APDataNexusBack
+	url = https://github.com/JackXuQiuShi/APDataNexusBack.git
+[submodule "APDataNexusFront"]
+	path = APDataNexusFront
+	url = https://github.com/JackXuQiuShi/APDataNexusFront.git
